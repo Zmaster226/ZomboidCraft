@@ -1,0 +1,7 @@
+Java Launcher: C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\bin\java.exe
+Arguments: '--inJar, C:\Users\zmast\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.20.1-47.1.46\forge-1.20.1-47.1.46-injected.jar, --outJar, C:\Users\zmast\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.20.1-47.1.46_mapped_official_1.20.1\forge-1.20.1-47.1.46_mapped_official_1.20.1.jar, --logFile, accesstransform.log, --atFile, C:\Users\zmast\Documents\GitHub\ZomboidCraft\build\_atJar_5\parent_at.cfg'
+Classpath:
+ - C:\Users\zmast\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.2.1\accesstransformers-8.2.1-fatjar.jar
+Working directory: C:\Users\zmast\Documents\GitHub\ZomboidCraft\build\_atJar_5
+Main class: net.minecraftforge.accesstransformer.TransformerProcessor
+====================================
