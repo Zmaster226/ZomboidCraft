@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Specification-Title: ZomboidCraft
+Specification-Vendor: example
+Specification-Version: 1
+Implementation-Title: ZomboidCraft
+Implementation-Version: 1.0
+Implementation-Vendor: example
+
