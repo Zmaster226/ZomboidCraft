@@ -6,6 +6,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.common.MinecraftForge;
 
 @Mod(ZomboidCraft.MODID)
 public class ZomboidCraft {
@@ -21,6 +22,6 @@ public class ZomboidCraft {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        // Client-only setup
+        event.enqueueWork(() -> MinecraftForge.EVENT_BUS.register(ClientEvents.class));
     }
 }

@@ -1,5 +1,7 @@
 package com.example.zomboidcraft;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,42 +10,36 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.nbt.CompoundTag;
 
 public class BandageItem extends Item {
-    private final boolean curesInfection;
-
-    public BandageItem(Properties properties, boolean curesInfection) {
+    public BandageItem(Properties properties) {
         super(properties);
-        this.curesInfection = curesInfection;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!player.getTags().contains(ModEvents.BLEEDING_TAG)) return InteractionResultHolder.fail(stack);
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(player.getItemInHand(hand));
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return 40; // 2 seconds
+        return 40; // 2 секунды
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.EAT;
+        return UseAnim.DRINK;
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player) {
-            CompoundTag tag = player.getPersistentData();
-            tag.putBoolean(ModEvents.BLEEDING_TAG, false);
-            if (curesInfection) {
-                tag.putBoolean(ModEvents.INFECTED_TAG, false);
-                tag.putInt(ModEvents.INFECTION_TIME_TAG, 0);
-            }
-            if (!player.isCreative()) {
+            if (player.getTags().contains(ModEvents.BLEEDING_TAG)) {
+                player.removeTag(ModEvents.BLEEDING_TAG);
+                level.playSound(null, player.blockPosition(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1f, 1f);
                 stack.shrink(1);
             }
         }

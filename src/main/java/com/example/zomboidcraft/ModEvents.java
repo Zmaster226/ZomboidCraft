@@ -3,10 +3,13 @@ package com.example.zomboidcraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEvents {
     public static final String INFECTED_TAG = "zomboidcraft_infected";
     public static final String INFECTION_TIME_TAG = "zomboidcraft_infection_time";
-    public static final String BLEEDING_TAG = "zomboidcraft_bleeding";
+    public static final String BLEEDING_TAG = "bleeding";
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -31,8 +34,7 @@ public class ModEvents {
                 }
             }
             if (player.level().random.nextFloat() < ModConfig.bleedChance.get()) {
-                CompoundTag tag = player.getPersistentData();
-                tag.putBoolean(BLEEDING_TAG, true);
+                player.addTag(BLEEDING_TAG);
             }
         }
     }
@@ -49,7 +51,7 @@ public class ModEvents {
                     player.hurt(player.damageSources().generic(), Float.MAX_VALUE);
                 }
             }
-            if (tag.getBoolean(BLEEDING_TAG)) {
+            if (player.getTags().contains(BLEEDING_TAG)) {
                 if (player.tickCount % 40 == 0) {
                     player.hurt(player.damageSources().generic(), 1.0F);
                 }
@@ -67,5 +69,13 @@ public class ModEvents {
                 serverLevel.addFreshEntity(clone);
             }
         }
+    }
+}
+
+@Mod.EventBusSubscriber(modid = ZomboidCraft.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+class ModSetupEvents {
+    @SubscribeEvent
+    public static void onEntityAttributeCreate(EntityAttributeCreationEvent event) {
+        event.put(com.example.zomboidcraft.entity.ModEntities.ZOMBIE_CLONE.get(), Zombie.createAttributes().build());
     }
 }
